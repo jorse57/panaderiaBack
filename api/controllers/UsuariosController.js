@@ -83,9 +83,9 @@ const self = module.exports = {
     let userReq = req.allParams();
     let usu = await usuario.find({ where: { correo: userReq.correo } });
     if (usu.length == 0) {
-      UtilidadesController.returnRes(false, 'Usuario/contraseña equivocados', res);
+      UtilidadesController.returnRes(false, 'Usuario/contraseña no coinciden', res);
     } else if (usu[0].estado === 0) {
-      UtilidadesController.returnRes(false, 'No esta activo', res);
+      UtilidadesController.returnRes(false, 'El usuario no esta activo', res);
     } else {
       let validatePsw = await UtilidadesController.compararPassUsuario(userReq.contrasena, usu[0].contrasena);
       if (validatePsw) {
@@ -135,7 +135,7 @@ const self = module.exports = {
     }
   },
 
-  sendEmailForward: async function(req, res) {
+  sendEmailForward: async function (req, res) {
     let params = req.allParams();
     try {
       let usu = await usuario.find({
@@ -154,7 +154,7 @@ const self = module.exports = {
 
       let a = await UtilidadesController.sendEmail(usu[0].correo, token)
 
-      UtilidadesController.returnRes(true, 'Correo enviado', res);      
+      UtilidadesController.returnRes(true, 'Correo enviado', res);
 
     } catch (error) {
       sails.log.debug(err);
@@ -162,10 +162,10 @@ const self = module.exports = {
     }
   },
 
-  cambiarContrasena: async function(req, res) {
+  cambiarContrasena: async function (req, res) {
     let params = req.allParams();
     let payload = await UtilidadesController.verificarToken(params.token, sails.jwtSecret, true)
-    
+
     if (!payload) {
       UtilidadesController.returnRes(false, 'Se ha vencido el token', res);
     }
@@ -181,6 +181,31 @@ const self = module.exports = {
       sails.log.debug(err);
       UtilidadesController.returnRes(false, 'Contraseña no actualizada', res);
     });
+  },
+
+  cambiarPass: async function (req, res) {
+    let params = req.allParams();
+    if (!params.id) {
+      UtilidadesController.returnRes(false, 'Falta el ID del usuario', res);
+    }
+    if (!params.pass) {
+      UtilidadesController.returnRes(false, 'Falta la nueva contraseña del usuario', res);
+    }
+    let newPass = await UtilidadesController.incriptarPass(params.pass);
+
+    let update = {
+      contrasena: newPass + ''
+    }
+    await usuario.update({ id: params.id }, update).then(() => {
+      UtilidadesController.returnRes(true, 'Contraseña actualizada', res);
+    }).catch((err) => {
+      sails.log.debug(err);
+      UtilidadesController.returnRes(false, 'Contraseña no actualizada', res);
+    });
+
+
 
   }
+
+
 }

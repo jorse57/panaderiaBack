@@ -42,6 +42,7 @@ module.exports.routes = {
  'POST /usuario/login' : 'UsuariosController.postLogin',
  'POST /sendEmailForward': 'UsuariosController.sendEmailForward',
  'POST /cambiarContrasena': 'UsuariosController.cambiarContrasena',
+ 'POST /cambiarPass' : 'UsuariosController.cambiarPass',
 
 
  'GET /producto' : 'ProductosController.get',
