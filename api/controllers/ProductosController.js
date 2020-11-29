@@ -60,4 +60,19 @@ const self = module.exports = {
       UtilidadesController.returnRes(false, 'No se pudo actualizar el producto', res);
     });
   },
+
+  agregarExistencias: async function (idProd, nuevasExistencias){
+    return new Promise( function (res, rej)  {
+      Producto.find({ where: { id: idProd } }).then((pro) => {
+        pro = pro[0]
+        let totalExistencias = pro.existencias + nuevasExistencias;
+        let update = {
+          existencias: totalExistencias
+        }
+        Producto.update({id: pro.id}, update).then(() => {
+          res('updated existencias')
+        }).catch(rej)
+      });
+    }) 
+  }
 }

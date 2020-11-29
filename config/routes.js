@@ -51,10 +51,9 @@ module.exports.routes = {
  'POST /producto' : 'ProductosController.crearProducto',
  'PUT /producto' : 'ProductosController.actualizarProducto',
 
+ 'GET /compra': 'ComprasController.get',
+ 'GET /compra/:id': 'ComprasController.getByid',
+ 'POST /compra': 'ComprasController.crearCompra',
+
  'GET /sendEmail': 'UtilidadesController.sendEmail'
- 
-
- 
-
-
 };
