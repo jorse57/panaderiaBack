@@ -61,18 +61,35 @@ const self = module.exports = {
     });
   },
 
-  agregarExistencias: async function (idProd, nuevasExistencias){
-    return new Promise( function (res, rej)  {
-      Producto.find({ where: { id: idProd } }).then((pro) => {
-        pro = pro[0]
-        let totalExistencias = pro.existencias + nuevasExistencias;
-        let update = {
-          existencias: totalExistencias
-        }
-        Producto.update({id: pro.id}, update).then(() => {
-          res('updated existencias')
-        }).catch(rej)
-      });
-    }) 
+  controlExistencias: async function (idProd, nuevasExistencias, tipo) {
+    if (tipo == 1) {
+      return new Promise(function (res, rej) {
+        Producto.find({ where: { id: idProd } }).then((pro) => {
+          pro = pro[0]
+          let totalExistencias = pro.existencias + nuevasExistencias;
+          let update = {
+            existencias: totalExistencias
+          }
+          Producto.update({ id: pro.id }, update).then(() => {
+            res('updated existencias')
+          }).catch(rej)
+        });
+      })
+    } else if (tipo == 2) {
+      return new Promise(function (res, rej) {
+        Producto.find({ where: { id: idProd } }).then((pro) => {
+          pro = pro[0]
+          let totalExistencias = pro.existencias - nuevasExistencias;
+          let update = {
+            existencias: totalExistencias
+          }
+          Producto.update({ id: pro.id }, update).then(() => {
+            res('updated existencias')
+          }).catch(rej)
+        });
+      })
+
+    }
+
   }
 }

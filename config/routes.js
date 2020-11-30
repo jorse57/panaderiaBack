@@ -55,5 +55,10 @@ module.exports.routes = {
  'GET /compra/:id': 'ComprasController.getByid',
  'POST /compra': 'ComprasController.crearCompra',
 
+ 'GET /venta': 'VentasController.get',
+ 'GET /venta/:id': 'VentasController.getByid',
+ 'POST /venta': 'VentasController.crearVenta',
+ 
+
  'GET /sendEmail': 'UtilidadesController.sendEmail'
 };

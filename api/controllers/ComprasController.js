@@ -34,8 +34,12 @@ const self = module.exports = {
     crearCompra: async function (req, res) {
         let com = req.allParams()
         Compra.create(com).then(() => {
-            await ProductosController.agregarExistencias(com.idProducto, com.cantidad)
-            UtilidadesController.returnRes(true, 'Compra creado', res);
+            ProductosController.controlExistencias(com.idProducto, com.cantidad, "1").then(re => {
+                UtilidadesController.returnRes(true, 'Compra creado', res);
+            }).catch((err) => {
+                sails.log.debug(err);
+                UtilidadesController.returnRes(false, 'No se pudo crear el Compra', res);
+            });
         }).catch((err) => {
             sails.log.debug(err);
             UtilidadesController.returnRes(false, 'No se pudo crear el Compra', res);
