@@ -13,9 +13,16 @@ const self = module.exports = {
     get: async function (req, res) {
         let params = req.allParams();
         let where = {};
+
+        let sqlFind = 'SELECT "nitProveedor", "numeroRecibo", "nombreProveedor", "fechaCompra", "fechaEntregaP"'
+        sqlFind += ' from compras'
+        sqlFind += ' group by "nitProveedor", "numeroRecibo", "nombreProveedor", "fechaCompra", "fechaEntregaP"'
+        sqlFind += ' order by "fechaCompra" DESC'
+
         if (params.search) where.numeroRecibo = params.search;
         try {
-            let compras = await Compra.find({ where }).sort('id ASC');
+            let comprasQuery = await sails.sendNativeQuery(sqlFind);
+            let compras = comprasQuery.rows
 
             UtilidadesController.returnRes(true, 'Compras', res, compras);
         } catch (error) {
@@ -29,6 +36,24 @@ const self = module.exports = {
         Compra.find({ where: { id: params.id } }).then((pro) => {
             UtilidadesController.returnRes(true, 'Compra por id', res, pro[0]);
         });
+    },
+
+    getByNumeroRecibo: async function (req, res) {
+        let params = req.allParams()
+        let pro = await Compra.find({ where: { numeroRecibo: params.numeroRecibo } })
+        let sqlFind = 'SELECT "idProducto", "nombre"'
+        sqlFind += ' FROM productos'
+        sqlFind += ' where "idProducto" = '
+        let totalCompra = 0;
+        for (let i = 0; i < pro.length; i++) {
+            let infoProQ = await sails.sendNativeQuery(sqlFind + pro[i].idProducto)
+            let infoPro = infoProQ.rows;
+            pro[i].idProd = infoPro[0].idProducto;
+            pro[i].nombreProd = infoPro[0].nombre;
+            totalCompra += pro[i].cantidad * pro[i].costo
+        }
+        pro[0].totalCompra = totalCompra;
+        UtilidadesController.returnRes(true, 'Compra por numeroRecibo', res, pro);
     },
 
     crearCompra: async function (req, res) {

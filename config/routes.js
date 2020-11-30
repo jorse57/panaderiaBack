@@ -47,12 +47,14 @@ module.exports.routes = {
 
  'GET /producto' : 'ProductosController.get',
  'GET /producto/:id' : 'ProductosController.getByid',
+ 'GET /producto/searchIdOrName/:search' : 'ProductosController.getByidOrByName',
  'GET /producto/search/:search' : 'ProductosController.get',
  'POST /producto' : 'ProductosController.crearProducto',
  'PUT /producto' : 'ProductosController.actualizarProducto',
 
  'GET /compra': 'ComprasController.get',
  'GET /compra/:id': 'ComprasController.getByid',
+ 'GET /compra/recibo/:numeroRecibo': 'ComprasController.getByNumeroRecibo',
  'POST /compra': 'ComprasController.crearCompra',
 
  'GET /venta': 'VentasController.get',

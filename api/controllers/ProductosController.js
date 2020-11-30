@@ -30,6 +30,25 @@ const self = module.exports = {
     });
   },
 
+  getByidOrByName: async function (req, res) {
+    let params = req.allParams()
+    let number = params.search * 1;
+    let find = {
+      or: [
+        { id: number ? number : undefined },
+        { nombre: params.search }
+      ]
+    };
+
+    Producto.find(find).then((pro) => {
+      if (pro[0]) {
+        UtilidadesController.returnRes(true, 'Producto por id', res, pro[0]);
+      } else {
+        UtilidadesController.returnRes(false, 'Producto no encontrado', res);
+      }
+    });
+  },
+
   crearProducto: async function (req, res) {
     let pro = req.allParams()
     Producto.create(pro).then(() => {
@@ -62,34 +81,22 @@ const self = module.exports = {
   },
 
   controlExistencias: async function (idProd, nuevasExistencias, tipo) {
-    if (tipo == 1) {
-      return new Promise(function (res, rej) {
-        Producto.find({ where: { id: idProd } }).then((pro) => {
-          pro = pro[0]
-          let totalExistencias = pro.existencias + nuevasExistencias;
-          let update = {
-            existencias: totalExistencias
-          }
-          Producto.update({ id: pro.id }, update).then(() => {
-            res('updated existencias')
-          }).catch(rej)
-        });
-      })
-    } else if (tipo == 2) {
-      return new Promise(function (res, rej) {
-        Producto.find({ where: { id: idProd } }).then((pro) => {
-          pro = pro[0]
-          let totalExistencias = pro.existencias - nuevasExistencias;
-          let update = {
-            existencias: totalExistencias
-          }
-          Producto.update({ id: pro.id }, update).then(() => {
-            res('updated existencias')
-          }).catch(rej)
-        });
-      })
-
-    }
-
+    return new Promise(function (res, rej) {
+      Producto.find({ where: { id: idProd } }).then((pro) => {
+        pro = pro[0]
+        let totalExistencias ;
+        if (tipo == 1) {
+          totalExistencias = pro.existencias + nuevasExistencias;
+        } else {
+          totalExistencias = pro.existencias - nuevasExistencias;
+        }
+        let update = {
+          existencias: totalExistencias
+        }
+        Producto.update({ id: pro.id }, update).then(() => {
+          res('updated existencias')
+        }).catch(rej)
+      });
+    })
   }
 }
