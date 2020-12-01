@@ -23,7 +23,7 @@ module.exports = {
         columnName: 'nombreProveedor'
       },
       idProducto: {
-        type: 'string',
+        type:'number',
         columnName: 'idProducto'
       },
       cantidad: {

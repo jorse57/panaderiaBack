@@ -33,13 +33,15 @@ const self = module.exports = {
   getByidOrByName: async function (req, res) {
     let params = req.allParams()
     let number = params.search * 1;
-    let find = {
-      or: [
-        { id: number ? number : undefined },
-        { nombre: params.search }
-      ]
-    };
+    let find = {};
+    if (number) {
+      find = { id: number ? number : undefined }
+    } else {
+      find = { nombre: params.search }
+    }
 
+    // console.log('find', JSON.stringify(find))
+    
     Producto.find(find).then((pro) => {
       if (pro[0]) {
         UtilidadesController.returnRes(true, 'Producto por id', res, pro[0]);

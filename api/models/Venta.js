@@ -14,20 +14,24 @@ module.exports = {
         unique: true,
         columnName: 'idVenta',
       },
+      numeroRecibo: {
+        type: 'number',
+        columnName: 'numeroRecibo',
+      },
       fechaVenta: {
         type: 'number',
         columnName: 'fechaVenta'
       },
       idProducto: {
-        type: 'string',
+        type: 'number',
         columnName: 'idProducto'
       },
       cantidad: {
-        type: 'string',
+        type: 'number',
         columnName: 'cantidad'
       },
       precio: {
-        type: 'string',
+        type: 'number',
         columnName: 'precio'
       },
       idCliente: {
