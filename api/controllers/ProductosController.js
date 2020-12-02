@@ -100,5 +100,39 @@ const self = module.exports = {
         }).catch(rej)
       });
     })
+  },
+  controlPrecio: async function (idProd, nuevoPrecio) {
+    return new Promise(function (res, rej) {
+      Producto.find({ where: { id: idProd } }).then((pro) => {
+        pro = pro[0]
+        console.log("Prodcto",pro);
+        console.log("nuevo precio",nuevoPrecio);
+        let update = {
+          precioVenta: nuevoPrecio
+        }
+        Producto.update({ id: pro.id }, update).then((resBD) => {
+          res('updated precio')
+          console.log(resBD);
+        }).catch(rej)
+      });
+    })
+  },
+
+  validarExistenciasProd: async function(req, res) {
+    let params = req.allParams()
+    if (params.productos && params.productos.length){
+      let invalidos = []; 
+      for (let i = 0; i < params.productos.length; i++) {
+        let prod = await Producto.find({ where: { id: params.productos[i].id } })
+        prod = prod[0]
+        if ((prod.existencias - params.productos[i].cantidad) < 0) {
+          invalidos.push({ id: prod.id, nombre: prod.nombre, existenciasDisponibles: prod.existencias })
+        }
+      }
+      UtilidadesController.returnRes(true, 'Productos invalidos', res, { invalidos });
+    } else {
+      UtilidadesController.returnRes(false, 'No envio productos', res);
+    }
   }
+  
 }

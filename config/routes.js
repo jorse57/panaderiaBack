@@ -51,6 +51,7 @@ module.exports.routes = {
  'GET /producto/search/:search' : 'ProductosController.get',
  'POST /producto' : 'ProductosController.crearProducto',
  'PUT /producto' : 'ProductosController.actualizarProducto',
+ 'POST /producto/validarExistencias': 'ProductosController.validarExistenciasProd',
 
  'GET /compra': 'ComprasController.get',
  'GET /compra/:id': 'ComprasController.getByid',
@@ -59,6 +60,7 @@ module.exports.routes = {
 
  'GET /venta': 'VentasController.get',
  'GET /venta/:id': 'VentasController.getByid',
+ 'GET /venta/searchClienteIdOrName/:search': 'VentasController.getClienteByidOrByName',
  'GET /venta/recibo/:numeroRecibo': 'VentasController.getByNumeroRecibo',
  'POST /venta': 'VentasController.crearVenta',
  'GET /venta/numeroRecibo': 'VentasController.get_NumeroRecibo',

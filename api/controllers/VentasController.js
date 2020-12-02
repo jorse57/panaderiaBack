@@ -50,8 +50,32 @@ const self = module.exports = {
         totalVenta += pro[i].cantidad * pro[i].precio
     }
     pro[0].totalVenta = totalVenta;
+    let usuarioVenta = await usuario.find({ where: { id: pro[0].idUsuario } });
+    if (usuarioVenta && usuarioVenta[0]) pro[0].nombreVendedor = usuarioVenta[0].nombre
     UtilidadesController.returnRes(true, 'Venta por numeroRecibo', res, pro);
 },
+
+// getClienteByidOrByName: async function (req, res) {
+//   let params = req.allParams()
+//   let number = params.search * 1;
+//   let find = {};
+//   if (number) {
+//     find = { id: number ? number : undefined}
+//   } else {
+//     find = { nombre: params.search }
+//   }
+
+//   // console.log('find', JSON.stringify(find))
+  
+//   usuario.find(find).then((cli) => {
+//     if (cli[0]) {
+//       UtilidadesController.returnRes(true, 'cliente por id', res, cli[0]);
+//     } else {
+//       UtilidadesController.returnRes(false, 'cliente no encontrado', res);
+//     }
+//   });
+// },
+
 
   crearVenta: async function (req, res) {
     let ven = req.allParams();

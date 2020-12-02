@@ -157,7 +157,7 @@ const self = module.exports = {
       UtilidadesController.returnRes(true, 'Correo enviado', res);
 
     } catch (error) {
-      sails.log.debug(err);
+      sails.log.debug(error);
       UtilidadesController.returnRes(false, 'error al enviar el correo', res);
     }
   },
