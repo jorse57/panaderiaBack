@@ -18,6 +18,10 @@ module.exports = {
       type: 'string',
       columnName: 'nombre'
     },
+    tipo_identificacion: {
+      type: 'number',
+      columnName: 'tipo_identificacion'
+    },
     identificacion: {
       type: 'string',
       columnName: 'identificacion'

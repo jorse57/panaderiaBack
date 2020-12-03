@@ -37,6 +37,7 @@ const self = module.exports = {
     let user = req.allParams();
     user.correo = user.correo.trim();
     let correoExist = await UtilidadesController.compararSiExisteCorreo(user.correo);
+    console.log("front", user.tipo_identificacion);
     if (!correoExist) {
       user.contrasena = await UtilidadesController.incriptarPass(user.contrasena);
       usuario.create(user).then(() => {
@@ -55,9 +56,11 @@ const self = module.exports = {
     user.correo = user.correo.trim();
     let correoExist = await UtilidadesController.compararSiExisteCorreo(user.correo);
     let user_db = await usuario.find({ where: { id: user.id } })
+    console.log("front", user.tipo_identificacion);
     if (!correoExist || user_db[0].correo === user.correo) {
       let update = {
         nombre: user.nombre,
+        tipo_identificacion : user.tipo_identificacion,
         identificacion: user.identificacion,
         contrasena: user.contrasena,
         correo: user.correo,
