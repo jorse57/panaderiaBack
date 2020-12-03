@@ -114,8 +114,8 @@ module.exports = {
       port: 465, // Port
       secure: true, // this is true as port is 465
       auth: {
-        user: "katalogurunleri@gmail.com", // generated ethereal user
-        pass: "98100658305", // generated ethereal password
+        user: "elmonopanaderia53@gmail.com", // generated ethereal user
+        pass: "123abc*345", // generated ethereal password
       },
     });
 
@@ -125,7 +125,7 @@ module.exports = {
       to: to, // list of receivers
       subject: "Recuperar contraseña", // Subject line
       //text: "Hello world?", // plain text body
-      html: `Hola, en el siguiente enlace podrás cambiar la contraseña <a href="http://localhost:9000/#/forwardPassword/${token}">cambiar</a>`, // html body
+      html: `Hola, en el siguiente enlace podrás cambiar la contraseña,  <a href="http://localhost:9000/#/forwardPassword/${token}">Cambiar.</a>`, // html body
     });
 
     console.log("Message sent: %s", info.messageId);

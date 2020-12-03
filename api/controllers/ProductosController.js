@@ -41,7 +41,7 @@ const self = module.exports = {
     }
 
     // console.log('find', JSON.stringify(find))
-    
+
     Producto.find(find).then((pro) => {
       if (pro[0]) {
         UtilidadesController.returnRes(true, 'Producto por id', res, pro[0]);
@@ -86,7 +86,7 @@ const self = module.exports = {
     return new Promise(function (res, rej) {
       Producto.find({ where: { id: idProd } }).then((pro) => {
         pro = pro[0]
-        let totalExistencias ;
+        let totalExistencias;
         if (tipo == 1) {
           totalExistencias = pro.existencias + nuevasExistencias;
         } else {
@@ -105,8 +105,8 @@ const self = module.exports = {
     return new Promise(function (res, rej) {
       Producto.find({ where: { id: idProd } }).then((pro) => {
         pro = pro[0]
-        console.log("Prodcto",pro);
-        console.log("nuevo precio",nuevoPrecio);
+        console.log("Prodcto", pro);
+        console.log("nuevo precio", nuevoPrecio);
         let update = {
           precioVenta: nuevoPrecio
         }
@@ -118,10 +118,10 @@ const self = module.exports = {
     })
   },
 
-  validarExistenciasProd: async function(req, res) {
+  validarExistenciasProd: async function (req, res) {
     let params = req.allParams()
-    if (params.productos && params.productos.length){
-      let invalidos = []; 
+    if (params.productos && params.productos.length) {
+      let invalidos = [];
       for (let i = 0; i < params.productos.length; i++) {
         let prod = await Producto.find({ where: { id: params.productos[i].id } })
         prod = prod[0]
@@ -133,6 +133,16 @@ const self = module.exports = {
     } else {
       UtilidadesController.returnRes(false, 'No envio productos', res);
     }
+  },
+
+  getProductoStockMin: async function (req, res) {
+    let sql = 'SELECT "idProducto", "existencias", "nombre", "stockMin"'
+    sql += ' FROM productos'
+    sql += ' where "stockMin" + 2 >= "existencias" OR  "existencias" <= "stockMin"'
+
+    let productosBD = await sails.sendNativeQuery(sql)
+    let productos = productosBD.rows;
+
+    UtilidadesController.returnRes(true, 'Productos próximos a quedarse sin stockMin', res, { productos });
   }
-  
 }

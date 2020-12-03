@@ -52,6 +52,8 @@ const self = module.exports = {
     pro[0].totalVenta = totalVenta;
     let usuarioVenta = await usuario.find({ where: { id: pro[0].idUsuario } });
     if (usuarioVenta && usuarioVenta[0]) pro[0].nombreVendedor = usuarioVenta[0].nombre
+    let clienteVenta = await usuario.find({ where: { id: pro[0].idCliente } });
+    if (clienteVenta && clienteVenta[0]) pro[0].nombreCliente = clienteVenta[0].nombre
     UtilidadesController.returnRes(true, 'Venta por numeroRecibo', res, pro);
   },
 

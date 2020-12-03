@@ -35,11 +35,11 @@ module.exports = {
         columnName: 'precio'
       },
       idCliente: {
-        type: 'string',
+        type: 'number',
         columnName: 'idCliente'
       },
       idUsuario: {
-        type: 'string',
+        type: 'number',
         columnName: 'idUsuario'
       },      
       
