@@ -31,9 +31,15 @@ const self = module.exports = {
 
   getByid: async function (req, res) {
     let params = req.allParams()
-    Venta.find({ where: { id: params.id } }).then((pro) => {
-      UtilidadesController.returnRes(true, 'Venta por id', res, pro[0]);
-    });
+    let sqlFindVenta = 'SELECT "numeroRecibo", "fechaVenta", SUM("precio" * "cantidad") as "total"'
+    sqlFindVenta += ' from ventas'
+    sqlFindVenta += ' WHERE "numeroRecibo" = ' + params.id
+    sqlFindVenta += ' group by "numeroRecibo", "fechaVenta"'
+    sqlFindVenta += ' order by "fechaVenta" DESC'
+    
+    let infoProBD = await sails.sendNativeQuery(sqlFindVenta)
+    let pro = infoProBD.rows;
+    UtilidadesController.returnRes(true, 'Venta por numeroRecibo', res, pro[0]);
   },
   getByNumeroRecibo: async function (req, res) {
     let params = req.allParams()

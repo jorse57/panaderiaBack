@@ -36,17 +36,22 @@ const self = module.exports = {
   crearUsuario: async function (req, res) {
     let user = req.allParams();
     user.correo = user.correo.trim();
+    let idExist = await UtilidadesController.compararSiExisteIdentificacion(user.identificacion)
     let correoExist = await UtilidadesController.compararSiExisteCorreo(user.correo);
-    if (!correoExist) {
-      user.contrasena = await UtilidadesController.incriptarPass(user.contrasena);
-      usuario.create(user).then(() => {
-        UtilidadesController.returnRes(true, 'Usuario creado', res);
-      }).catch((err) => {
-        sails.log.debug(err);
-        UtilidadesController.returnRes(false, 'No se pudo crear el usuario', res);
-      });
+    if (!idExist) {
+      if (!correoExist && !idExist) {
+        user.contrasena = await UtilidadesController.incriptarPass(user.contrasena);
+        usuario.create(user).then(() => {
+          UtilidadesController.returnRes(true, 'Usuario creado', res);
+        }).catch((err) => {
+          sails.log.debug(err);
+          UtilidadesController.returnRes(false, 'No se pudo crear el usuario', res);
+        });
+      } else {
+        UtilidadesController.returnRes(false, 'correo ya existe', res);
+      }
     } else {
-      UtilidadesController.returnRes(false, 'Correo ya existe', res);
+      UtilidadesController.returnRes(false, 'identificacion ya existe', res);
     }
   },
 
@@ -58,7 +63,7 @@ const self = module.exports = {
     if (!correoExist || user_db[0].correo === user.correo) {
       let update = {
         nombre: user.nombre,
-        tipo_identificacion : user.tipo_identificacion,
+        tipo_identificacion: user.tipo_identificacion,
         identificacion: user.identificacion,
         contrasena: user.contrasena,
         correo: user.correo,
@@ -99,7 +104,7 @@ const self = module.exports = {
         }
         UtilidadesController.returnRes(true, 'login success', res, data);
       } else {
-        UtilidadesController.returnRes(false, 'Usuario/contraseña equivocados', res);
+        UtilidadesController.returnRes(false, 'Usuario/contraseña incorrectos', res);
       }
     }
 

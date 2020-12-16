@@ -61,7 +61,7 @@ module.exports.routes = {
   'POST /compra': 'ComprasController.crearCompra',
 
   'GET /venta': 'VentasController.get',
-  'GET /venta/:id': 'VentasController.getByid',
+  'GET /venta/search/:id': 'VentasController.getByid',
   'GET /venta/searchClienteIdOrName/:search': 'VentasController.getClienteByidOrByName',
   'GET /venta/recibo/:numeroRecibo': 'VentasController.getByNumeroRecibo',
   'POST /venta': 'VentasController.crearVenta',

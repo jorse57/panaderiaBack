@@ -86,6 +86,14 @@ module.exports = {
       return false;
     }
   },
+  compararSiExisteIdentificacion: async function(identificacion){
+    let users = await usuario.find({ where: { identificacion: identificacion }});
+    if(users && users.length>0){
+      return true;
+    }else{
+      return false;
+    }
+  }, 
   /**
    * Método para obtener una cadena encriptada del parámetro password.
    */
