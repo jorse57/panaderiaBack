@@ -35,6 +35,7 @@ module.exports.routes = {
   //TipodeMetodpoHTTP/RUTA/ruta: elcontrollerusado.elnombredelmetodo
   'GET /usuario/crearAdmin': 'UsuariosController.crearAdmin',
   'GET /usuario/:id': 'UsuariosController.getByid',
+  'GET /usuario/search/:id': 'UsuariosController.getByidentificacion',
   'GET /usuario/clientes': 'UsuariosController.getClientes',
   'GET /usuario': 'UsuariosController.get',
   'POST /usuario': 'UsuariosController.crearUsuario',
@@ -57,6 +58,7 @@ module.exports.routes = {
 
   'GET /compra': 'ComprasController.get',
   'GET /compra/:id': 'ComprasController.getByid',
+  'GET /compra/search/:id': 'ComprasController.getCompraIndividual',
   'GET /compra/recibo/:numeroRecibo': 'ComprasController.getByNumeroRecibo',
   'POST /compra': 'ComprasController.crearCompra',
 

@@ -210,6 +210,18 @@ const self = module.exports = {
     });
   },
 
+  getByidentificacion: async function (req, res) {
+    let params = req.allParams()
+    console.log("parametro--->", params)
+    let sqlFindCompra = 'SELECT "nombre", "rol", "telefono", "estado"'
+    sqlFindCompra += ' from usuarios'
+    sqlFindCompra += ' WHERE "identificacion" = '+ params.id
+
+    let infoProBD = await sails.sendNativeQuery(sqlFindCompra)
+    let pro = infoProBD.rows;
+    UtilidadesController.returnRes(true, 'Compra por numeroRecibo', res, pro[0]);
+  },
+
   getClientes: async function (req, res) {
     let clientes = await usuario.find({ where: { rol: 3 } })
     UtilidadesController.returnRes(true, 'usuario por id', res, { clientes });

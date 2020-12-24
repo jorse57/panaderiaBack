@@ -37,6 +37,20 @@ const self = module.exports = {
       UtilidadesController.returnRes(true, 'Compra por id', res, pro[0]);
     });
   },
+  getCompraIndividual: async function (req, res) {
+    let params = req.allParams()
+    params = params +""
+    console.log("parametro--->", params)
+    let sqlFindCompra = 'SELECT "nitProveedor", "numeroRecibo", "nombreProveedor", "fechaCompra", "fechaEntregaP"'
+    sqlFindCompra += ' from compras'
+    sqlFindCompra += ' WHERE "numeroRecibo" = '+ params.id
+    sqlFindCompra += ' group by "numeroRecibo"'
+
+    let infoProBD = await sails.sendNativeQuery(sqlFindCompra)
+    let pro = infoProBD.rows;
+    UtilidadesController.returnRes(true, 'Compra por numeroRecibo', res, pro[0]);
+  },
+
 
   getByNumeroRecibo: async function (req, res) {
     let params = req.allParams()
@@ -61,7 +75,7 @@ const self = module.exports = {
     try {
       let resCom = await Compra.create(com)
       let resExis = await ProductosController.controlExistencias(com.idProducto, com.cantidad, "1")
-      let resPrecio = await ProductosController.controlPrecio(com.idProducto,com.valor)
+      let resPrecio = await ProductosController.controlPrecio(com.idProducto, com.valor)
       UtilidadesController.returnRes(true, 'Compra creado', res);
     } catch (err) {
       sails.log.debug(err);

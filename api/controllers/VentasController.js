@@ -41,6 +41,8 @@ const self = module.exports = {
     let pro = infoProBD.rows;
     UtilidadesController.returnRes(true, 'Venta por numeroRecibo', res, pro[0]);
   },
+
+  
   getByNumeroRecibo: async function (req, res) {
     let params = req.allParams()
     let pro = await Venta.find({ where: { numeroRecibo: params.numeroRecibo } })
