@@ -39,12 +39,11 @@ const self = module.exports = {
   },
   getCompraIndividual: async function (req, res) {
     let params = req.allParams()
-    params = params +""
-    console.log("parametro--->", params)
     let sqlFindCompra = 'SELECT "nitProveedor", "numeroRecibo", "nombreProveedor", "fechaCompra", "fechaEntregaP"'
     sqlFindCompra += ' from compras'
-    sqlFindCompra += ' WHERE "numeroRecibo" = '+ params.id
-    sqlFindCompra += ' group by "numeroRecibo"'
+    sqlFindCompra += ' WHERE "numeroRecibo" = \''+ params.id + '\''
+    sqlFindCompra += ' group by "nitProveedor", "numeroRecibo", "nombreProveedor", "fechaCompra", "fechaEntregaP"'
+    sqlFindCompra += ' order by "fechaCompra" DESC'
 
     let infoProBD = await sails.sendNativeQuery(sqlFindCompra)
     let pro = infoProBD.rows;

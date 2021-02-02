@@ -50,11 +50,13 @@ module.exports.routes = {
   'GET /producto': 'ProductosController.get',
   'GET /producto/:id': 'ProductosController.getByid',
   'GET /producto/searchIdOrName/:search': 'ProductosController.getByidOrByName',
+  'GET /producto/getByidOrByNameVenta/:search': 'ProductosController.getByidOrByNameVenta',
   'GET /producto/search/:search': 'ProductosController.get',
   'POST /producto': 'ProductosController.crearProducto',
   'PUT /producto': 'ProductosController.actualizarProducto',
   'POST /producto/validarExistencias': 'ProductosController.validarExistenciasProd',
   'GET /producto/getProductoStockMin': 'ProductosController.getProductoStockMin',
+  'GET /producto/getPoductosParaVenta': 'getPoductosParaVenta',
 
   'GET /compra': 'ComprasController.get',
   'GET /compra/:id': 'ComprasController.getByid',

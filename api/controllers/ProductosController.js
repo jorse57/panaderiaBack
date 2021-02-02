@@ -30,8 +30,9 @@ const self = module.exports = {
     });
   },
 
-  getByidOrByName: async function (req, res) {
+  getByidOrByName: async function (req, res, isVenta) {
     let params = req.allParams()
+    console.log(JSON.stringify(isVenta));
     let number = params.search * 1;
     let find = {};
     if (number) {
@@ -40,7 +41,9 @@ const self = module.exports = {
       find = { nombre: params.search }
     }
 
-    // console.log('find', JSON.stringify(find))
+    if (isVenta == true) find.estado = 1;
+
+    console.log(JSON.stringify(find));
 
     Producto.find(find).then((pro) => {
       if (pro[0]) {
@@ -49,6 +52,11 @@ const self = module.exports = {
         UtilidadesController.returnRes(false, 'Producto no encontrado', res);
       }
     });
+  },
+
+  getByidOrByNameVenta: async function (req, res) {
+
+    self.getByidOrByName(req, res, true)
   },
 
   crearProducto: async function (req, res) {

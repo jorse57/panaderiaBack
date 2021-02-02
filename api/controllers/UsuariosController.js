@@ -13,8 +13,8 @@ const self = module.exports = {
     let user = {
       nombre: "admin",
       identificacion: "123",
-      contrasena: await UtilidadesController.incriptarPass("123"),
-      correo: "admin@proyecto.com",
+      contrasena: await UtilidadesController.incriptarPass("123456"),
+      correo: "elmonopanaderia53@gmail.com",
       telefono: "2222222",
       direccion: "cll 3",
       estado: 1,
@@ -40,7 +40,7 @@ const self = module.exports = {
     let correoExist = await UtilidadesController.compararSiExisteCorreo(user.correo);
     if (!idExist) {
       if (!correoExist && !idExist) {
-        user.contrasena = await UtilidadesController.incriptarPass(user.contrasena);
+        if (user.rol != 3) user.contrasena = await UtilidadesController.incriptarPass(user.contrasena);
         usuario.create(user).then(() => {
           UtilidadesController.returnRes(true, 'Usuario creado', res);
         }).catch((err) => {
@@ -88,7 +88,7 @@ const self = module.exports = {
   postLogin: async function (req, res) {
     let userReq = req.allParams();
     let usu = await usuario.find({ where: { correo: userReq.correo } });
-    if (usu.length == 0) {
+    if (usu.length == 0 || usu[0].rol === 3 ) {
       UtilidadesController.returnRes(false, 'Usuario/contraseña no coinciden', res);
     } else if (usu[0].estado === 0) {
       UtilidadesController.returnRes(false, 'El usuario no esta activo', res);
@@ -215,7 +215,7 @@ const self = module.exports = {
     console.log("parametro--->", params)
     let sqlFindCompra = 'SELECT "nombre", "rol", "telefono", "estado"'
     sqlFindCompra += ' from usuarios'
-    sqlFindCompra += ' WHERE "identificacion" = '+ params.id
+    sqlFindCompra += ' WHERE "identificacion" = \''+ params.id + '\''
 
     let infoProBD = await sails.sendNativeQuery(sqlFindCompra)
     let pro = infoProBD.rows;
